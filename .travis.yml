@@ -1,37 +1,35 @@
 language: node_js
-node_js:
+node_js: 
   - 13
 
 services:
-  - docker
+  - docker 
 
-# Pre-testing installs
+# Pre-testing installs 
 install:
   - echo "nothing needs to be installed"
 
-# Scripts to be run such as tests
+# Scripts to be run such as tests 
 before_script:
   - echo "no tests"
 
-script:
-  - docker --version # print the version for logging
+script: 
+  - docker --version # print the docker version for logging
   - docker build -t udagram-api-feed ./udagram-api-feed
-  - docker tag udagram-api-feed trevthedev254/udagram-api-feed:v1
+  - docker tag udagram-api-feed trevthedev254/udagram-api-feed
 
   - docker build -t udagram-api-user ./udagram-api-user
-  - docker tag udagram-api-user trevthedev254/udagram-api-user:v1
+  - docker tag udagram-api-user trevthedev254/udagram-api-user
 
   - docker build -t udagram-frontend ./udagram-frontend
-  - docker tag udagram-frontend trevthedev254/udagram-frontend:v1
+  - docker tag udagram-frontend trevthedev254/udagram-frontend
 
-  - docker build -t udagram-reverseproxy ./udagram-reverseproxy
-  - docker tag udagram-reverseproxy trevthedev254/udagram-reverseproxy:v1
+  - docker build -t reverseproxy ./udagram-reverseproxy
+  - docker tag reverseproxy trevthedev254/reverseproxy
 
-
-# Tasks to perform after the process is successful. Formatting the Docker username and password as below enables you to programmatically log in without having the password exposed in logs.
 after_success:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-  - docker push trevthedev254/udagram-api-feed:v1
-  - docker push trevthedev254/udagram-api-user:v1
-  - docker push trevthedev254/udagram-frontend:v1
-  - docker push trevthedev254/udagram-reverseproxy:v1
+  - docker push trevthedev254/udagram-api-feed
+  - docker push trevthedev254/udagram-api-user
+  - docker push trevthedev254/udagram-frontend:local
+  - docker push trevthedev254/reverseproxy
