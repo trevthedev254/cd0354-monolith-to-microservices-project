@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    service: backend-feed
+  name: backend-feed
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      service: backend-feed
+  template:
+    metadata:
+      labels:
+        service: backend-feed
+    spec:
+      containers:
+        - name: backend-feed
+          image: trevthedev254/udagram-api-feed
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Always  
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2048Mi"
+              cpu: "500m" 
+
+      
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: backend-feed
+  name: backend-feed
+spec:
+  ports:
+  - name: "8080"
+    port: 8080
+    targetPort: 8080
+  selector:
+    service: backend-feed

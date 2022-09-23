@@ -19,8 +19,10 @@ spec:
         - containerPort: 80
         resources:
           limits:
+            memory: "2048Mi"
             cpu: 500m
           requests:
+            memory: "128Mi"
             cpu: 200m
 
 ---
@@ -37,3 +39,4 @@ spec:
     targetPort: 8080
   selector:
     service: backend-feed
+    

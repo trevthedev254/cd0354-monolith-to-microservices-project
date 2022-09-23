@@ -1,42 +1,39 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-user
+  name: reverseproxy
 spec:
   selector:
     matchLabels:
-      run: backend-user
+      run: reverseproxy
   replicas: 2
   template:
     metadata:
       labels:
-        run: backend-user
+        run: reverseproxy
     spec:
       containers:
-      - name: backend-user
-        image: docker.io/trevthedev254/udagram-api-user:v1
+      - name: reverseproxy
+        image: docker.io/trevthedev254/reverseproxy:v1
         ports:
         - containerPort: 80
         resources:
           limits:
-            memory: "2048Mi"
-            cpu: 500m
+            cpu: 1000m
           requests:
-            memory: "128Mi"
-            cpu: 200m
-
+            cpu: 500m
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
   labels:
-    service: backend-user
-  name: backend-user
+    service: reverseproxy
+  name: reverseproxy
 spec:
   ports:
   - name: "8080"
     port: 8080
     targetPort: 8080
   selector:
-    service: backend-user
+    service: reverseproxy

@@ -1,42 +1,38 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-user
+  name: frontend
 spec:
   selector:
     matchLabels:
-      run: backend-user
+      run: frontend
   replicas: 2
   template:
     metadata:
       labels:
-        run: backend-user
+        run: frontend
     spec:
       containers:
-      - name: backend-user
-        image: docker.io/trevthedev254/udagram-api-user:v1
-        ports:
+      - name: frontend
+        image: docker.io/trevthedev254/udagram-frontend:v4
+        ports: 
         - containerPort: 80
         resources:
           limits:
-            memory: "2048Mi"
             cpu: 500m
           requests:
-            memory: "128Mi"
             cpu: 200m
-
 
 ---
 apiVersion: v1
 kind: Service
 metadata:
+  name: frontend
   labels:
-    service: backend-user
-  name: backend-user
+    run: frontend
 spec:
   ports:
-  - name: "8080"
-    port: 8080
-    targetPort: 8080
+  - port: 80
+    protocol: TCP
   selector:
-    service: backend-user
+    run: frontend
